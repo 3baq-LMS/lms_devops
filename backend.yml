@@ -1,0 +1,16 @@
+# This file only defines the backend service
+services:
+  backend-dev:
+    image: ${BACKEND_DEV_IMAGE} # Variable passed from the CI/CD
+    container_name: backend-dev
+    restart: always
+    env_file: .env # For DATABASE_URL
+    networks:
+      - dev_network
+    expose:
+      - "4000"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:4000/api/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
