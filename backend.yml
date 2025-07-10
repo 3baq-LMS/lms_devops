@@ -1,17 +1,18 @@
-# File: lms_devops/backend.yml
+# File: backend.yml
+
 services:
   backend-dev:
     image: ${BACKEND_DEV_IMAGE}
     container_name: backend-dev
     restart: always
-    # This now provides ALL environment variables to the container
     env_file: .env
+    environment:
+      - PORT=4000
     networks:
-      - dev_network
-    expose:
-      - "4000"
+      - dev_network  
+    ports:
+      - "4000:4000"
     healthcheck:
-      # This will now succeed because the app will run on port 4000
       test: ["CMD", "curl", "--fail", "http://localhost:4000/api/health"]
       interval: 30s
       timeout: 10s
