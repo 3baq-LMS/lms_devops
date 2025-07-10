@@ -1,0 +1,18 @@
+# This file only defines the frontend service
+services:
+  frontend-dev:
+    image: lms-monorepo:dev # The image built locally on the server
+    container_name: frontend-dev
+    restart: always
+    ports:
+      - "6000:3000"
+      - "6001:3001"
+      - "6002:3002"
+      - "6003:3003"
+    networks:
+      - dev_network
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend-dev:4000
+    depends_on:
+      backend-dev:
+        condition: service_healthy
