@@ -4,17 +4,19 @@ version: '3.8'
 
 services:
   backend-dev:
-    # Use a standard environment variable for the image
     image: ${BACKEND_DEV_IMAGE}
     container_name: backend-dev
     restart: always
-    # Tell the container to load its runtime variables from an .env file
     env_file: .env
     expose:
       - "4000"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:4000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   frontend-dev:
-    # You should do the same for the frontend image
     image: ${FRONTEND_DEV_IMAGE}
     container_name: frontend-dev
     restart: always
@@ -26,4 +28,5 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://backend-dev:4000
     depends_on:
-      - backend-dev
+      backend-dev:
+        condition: service_healthy
