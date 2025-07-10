@@ -1,7 +1,7 @@
 # This file only defines the frontend service
 services:
   frontend-dev:
-    image: lms-frontend:dev # The image built locally on the server
+    image: ${FRONTEND_DEV_IMAGE} # The image built locally on the server
     container_name: frontend-dev
     restart: always
     ports:
