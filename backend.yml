@@ -1,16 +1,18 @@
-# This file only defines the backend service
+# File: lms_devops/backend.yml
 services:
   backend-dev:
-    image: ${BACKEND_DEV_IMAGE} # Variable passed from the CI/CD
+    image: ${BACKEND_DEV_IMAGE}
     container_name: backend-dev
     restart: always
-    env_file: .env # For DATABASE_URL
+    # This now provides ALL environment variables to the container
+    env_file: .env
     networks:
       - dev_network
     expose:
       - "4000"
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:4000/api/docs"]
+      # This will now succeed because the app will run on port 4000
+      test: ["CMD", "curl", "--fail", "http://localhost:4000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 5
