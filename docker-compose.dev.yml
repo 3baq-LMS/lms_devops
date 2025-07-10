@@ -1,29 +1,29 @@
+# File: lms-devops/docker-compose.dev.yml
+
 version: '3.8'
 
 services:
   backend-dev:
-    image: ghcr.io/${{ secrets.GITHUB_REPOSITORY_OWNER }}/lms-core:dev
+    # Use a standard environment variable for the image
+    image: ${BACKEND_DEV_IMAGE}
     container_name: backend-dev
     restart: always
-    environment:
-      - DATABASE_URL=${DATABASE_URL_DEV}
-      # Add other dev-specific environment variables here
-      - PORT=4000
+    # Tell the container to load its runtime variables from an .env file
+    env_file: .env
     expose:
-      - "4000" # Expose port only to other containers in the network
+      - "4000"
 
   frontend-dev:
-    image: ghcr.io/${{ secrets.GITHUB_REPOSITORY_OWNER }}/lms-monorepo:dev
+    # You should do the same for the frontend image
+    image: ${FRONTEND_DEV_IMAGE}
     container_name: frontend-dev
     restart: always
     ports:
-      # Map all 4 frontend apps to ports on the host
-      - "9000:3000"
-      - "9001:3001"
-      - "9002:3002"
-      - "9003:3003"
+      - "6000:3000"
+      - "6001:3001"
+      - "6002:3002"
+      - "6003:3003"
     environment:
-      # The frontend can talk to the backend using its service name
       - NEXT_PUBLIC_API_URL=http://backend-dev:4000
     depends_on:
       - backend-dev
