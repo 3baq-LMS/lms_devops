@@ -5,10 +5,10 @@ services:
     container_name: frontend-dev
     restart: always
     ports:
-      - "6000:3000"
-      - "6001:3001"
-      - "6002:3002"
-      - "6003:3003"
+      - "7000:3000"
+      - "7001:3001"
+      - "7002:3002"
+      - "7003:3003"
     networks:
       - dev_network
     environment:
