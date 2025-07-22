@@ -11,8 +11,6 @@ services:
       - "7003:3003"
     networks:
       - dev_network
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend-dev:4000/api
     depends_on:
       backend-dev:
         condition: service_healthy
